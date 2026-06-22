@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algoritmo terapéutico de sofocos en menopausia</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar clean-topbar">
+    <div class="brand-left"><img src="assets/logo_area_jerez.png" alt="Área de Gestión Sanitaria Jerez, Costa Noroeste y Sierra de Cádiz" /></div>
+    <div class="brand-center"><h1>Algoritmo terapéutico de sofocos en menopausia</h1></div>
+    <div class="brand-right"><strong>Unidad de Ginecología y Obstetricia</strong><span>Hospital Universitario de Jerez de la Frontera</span></div>
+  </header>
+
+  <div class="app-shell">
+    <aside class="sidebar elegant-sidebar">
+      <button class="nav-item active" data-target="station-context"><span>🕒</span>Situación</button>
+      <button class="nav-item locked" data-target="station-cervantes"><span>📊</span>Cervantes</button>
+      <button class="nav-item locked" data-target="station-route"><span>🧭</span>Ruta</button>
+      <button class="nav-item locked" data-target="station-eligibility"><span>🛡️</span>Elegibilidad</button>
+      <button class="nav-item locked" data-target="station-treatment"><span>💊</span>Tratamiento</button>
+      <button class="nav-item locked" data-target="station-report"><span>📄</span>Informe</button>
+      <div class="sidebar-footer"><strong>Uso interno</strong><span>AGS Jerez · Junio 2026</span></div>
+    </aside>
+
+    <main class="main-content">
+      <div class="progress-strip pretty-progress" aria-label="Progreso del algoritmo">
+        <div class="progress-step active" id="progress-context"><b>🕒</b><span>Amenorrea</span></div>
+        <div class="progress-step" id="progress-cervantes"><b>📊</b><span>Cervantes</span></div>
+        <div class="progress-step" id="progress-route"><b>🧭</b><span>Ruta</span></div>
+        <div class="progress-step" id="progress-eligibility"><b>🛡️</b><span>Elegibilidad</span></div>
+        <div class="progress-step" id="progress-treatment"><b>💊</b><span>Tratamiento</span></div>
+        <div class="progress-step" id="progress-report"><b>📄</b><span>Informe</span></div>
+      </div>
+
+      <section class="station active" id="station-context">
+        <div class="station-head visual-head"><div><h2>🕒 Situación menopáusica</h2><p>Define la ventana terapéutica y la necesidad anticonceptiva. La paciente ya consulta por sofocos.</p></div><span class="badge green">Estación 1</span></div>
+        <div class="grid two">
+          <div class="card input-card"><label class="field-label" for="age">Edad</label><input id="age" type="number" min="35" max="90" placeholder="Ej. 52" /><p class="hint">&lt;40 años: valorar IOP/menopausia precoz fuera de esta herramienta.</p></div>
+          <div class="card input-card"><label class="field-label" for="amenorrhea">Tiempo en amenorrea</label><select id="amenorrhea"><option value="">Seleccionar</option><option value="lt12">Menos de 12 meses</option><option value="y1to3">Entre 1 y 3 años</option><option value="y3to10">Entre 3 y 10 años</option><option value="gt10">Más de 10 años</option></select></div>
+        </div>
+        <div id="context-dynamic" class="dynamic-zone"></div>
+        <div class="conclusion empty" id="context-conclusion">Complete edad y tiempo de amenorrea para definir la ruta inicial.</div>
+        <div class="actions"><button class="primary" id="btn-context">Validar situación y continuar</button></div>
+      </section>
+
+      <section class="station locked" id="station-cervantes">
+        <div class="station-head visual-head"><div><h2>📊 Escala Cervantes SFv2</h2><p>Los ítems se agrupan por dominios para facilitar el registro. La conclusión aparece al completar la escala.</p></div><span class="badge blue">Estación 2</span></div>
+        <div class="scale-intro card soft-blue"><p><strong>Instrucciones.</strong> 0 indica la mejor situación y 5 la peor. Las preguntas 15 y 16 se contestan solo si la paciente tiene pareja actual.</p><label class="inline-check"><input type="checkbox" id="hasPartner" checked /> Tiene pareja actualmente</label></div>
+        <div class="scale-table pretty-scale" id="cervantes-items"></div>
+        <div class="conclusion empty" id="cervantes-conclusion">Complete todos los ítems aplicables para calcular el dominio Menopausia + Salud y la puntuación global.</div>
+        <div class="actions split-actions" id="cervantes-actions" hidden><button class="secondary" id="btn-finish-natural">Finalizar con medidas no farmacológicas</button><button class="primary" id="btn-cervantes-continue">Continuar valoración terapéutica</button></div>
+      </section>
+
+      <section class="station locked" id="station-route">
+        <div class="station-head visual-head"><div><h2>🧭 Ruta terapéutica</h2><p>La ruta se define por amenorrea, necesidad anticonceptiva y resultado de Cervantes.</p></div><span class="badge green">Estación 3</span></div>
+        <div class="route-cards" id="route-cards"></div><div class="conclusion" id="route-conclusion"></div><div class="actions"><button class="primary" id="btn-route">Continuar a elegibilidad</button></div>
+      </section>
+
+      <section class="station locked" id="station-eligibility">
+        <div class="station-head visual-head"><div><h2>🛡️ Criterios de elegibilidad</h2><p>OMS si la ruta es anticonceptiva y AEEM si la ruta es THM.</p></div><span class="badge amber">Estación 4</span></div>
+        <div id="eligibility-form"></div><div class="conclusion empty" id="eligibility-conclusion">Complete los criterios para emitir una recomendación segura.</div><div class="actions"><button class="primary" id="btn-eligibility">Calcular elegibilidad y continuar</button></div>
+      </section>
+
+      <section class="station locked" id="station-treatment">
+        <div class="station-head visual-head"><div><h2>💊 Tratamiento recomendado</h2><p>Se muestra una primera opción sugerida y alternativas razonables.</p></div><span class="badge green">Estación 5</span></div>
+        <div id="treatment-options" class="treatment-options"></div><div class="conclusion empty" id="treatment-conclusion">Seleccione una opción terapéutica.</div><div class="actions"><button class="primary" id="btn-treatment">Generar informe y recomendaciones</button></div>
+      </section>
+
+      <section class="station locked" id="station-report">
+        <div class="station-head visual-head"><div><h2>📄 Informe y recomendaciones</h2><p>Textos listos para copiar a Diraya o entregar a la paciente.</p></div><span class="badge blue">Salida final</span></div>
+        <div class="final-summary" id="final-summary"></div>
+        <div class="grid two report-grid">
+          <div class="card report-card"><h3>Informe para historia clínica</h3><textarea id="clinical-report" readonly></textarea><button class="copy-btn" data-copy="clinical-report">Copiar informe</button></div>
+          <div class="card report-card"><h3>Recomendaciones para la paciente</h3><textarea id="patient-report" readonly></textarea><button class="copy-btn" data-copy="patient-report">Copiar recomendaciones</button></div>
+          <div class="card report-card pauta-card"><h3>Pauta terapéutica resumida</h3><textarea id="pauta-report" readonly></textarea><button class="copy-btn" data-copy="pauta-report">Copiar solo pauta</button></div>
+        </div>
+        <div class="actions"><button class="secondary" onclick="window.print()">Imprimir / guardar PDF</button><button class="ghost" id="btn-reset">Reiniciar</button></div>
+      </section>
+    </main>
+
+    <aside class="summary-panel">
+      <h2>Resumen</h2>
+      <div class="summary-item"><span>Situación</span><strong id="sum-context">Pendiente</strong></div>
+      <div class="summary-item"><span>Cervantes M+S</span><strong id="sum-ms">Pendiente</strong></div>
+      <div class="summary-item"><span>Impacto</span><strong id="sum-impact">Pendiente</strong></div>
+      <div class="summary-item"><span>Ruta</span><strong id="sum-route">Pendiente</strong></div>
+      <div class="summary-item"><span>Elegibilidad</span><strong id="sum-eligibility">Pendiente</strong></div>
+      <div class="summary-item"><span>Tratamiento</span><strong id="sum-treatment">Pendiente</strong></div>
+      <div class="summary-note" id="safety-note">La herramienta no sustituye el juicio clínico ni la revisión de ficha técnica.</div>
+    </aside>
+  </div>
+
+  <footer class="footer">Basado en Menoguías AEEM, Escala Cervantes SFv2, criterios de elegibilidad AEEM para THM y criterios OMS para anticoncepción. Uso interno. Unidad de Ginecología y Obstetricia · Hospital Universitario de Jerez.</footer>
+  <script src="script.js"></script>
+</body>
+</html>
