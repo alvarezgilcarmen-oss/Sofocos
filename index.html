@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Algoritmo terapéutico de sofocos en menopausia</title>
-  <link rel="stylesheet" href="style.css?v=4" />
+  <link rel="stylesheet" href="style.css?v=6" />
 </head>
 <body>
   <header class="topbar clean-topbar">
@@ -47,7 +47,7 @@
 
       <section class="station locked" id="station-cervantes">
         <div class="station-head visual-head"><div><h2>📊 Escala Cervantes SFv2</h2><p>Los ítems se agrupan por dominios para facilitar el registro. La conclusión aparece al completar la escala.</p></div><span class="badge blue">Estación 2</span></div>
-        <div class="scale-intro card soft-blue"><p><strong>Instrucciones.</strong> 0 indica la mejor situación y 5 la peor. Las preguntas 15 y 16 se contestan solo si la paciente tiene pareja actual.</p><label class="inline-check"><input type="checkbox" id="hasPartner" checked /> Tiene pareja actualmente</label></div>
+        <div class="scale-intro card soft-blue"><p><strong>Instrucciones.</strong> 0 indica la mejor situación y 5 la peor. Las preguntas 15 y 16 se contestan solo si la paciente tiene pareja actual. <br><span class="src-tag tool">Pendiente de cotejo</span> Texto de los ítems, anclas y fórmula de paso a 0–100 (directa ÷ máximo × 100) pendientes de cotejar con la versión oficial de la AEEM. Umbral: &gt;25 en Menopausia y Salud (Coronado et al., <em>Menopause</em> 2021; Fasero et al., 2025).</p><label class="inline-check"><input type="checkbox" id="hasPartner" checked /> Tiene pareja actualmente</label></div>
         <div class="scale-table pretty-scale" id="cervantes-items"></div>
         <div class="conclusion empty" id="cervantes-conclusion">Complete todos los ítems aplicables para calcular el dominio Menopausia + Salud y la puntuación global.</div>
         <div class="actions split-actions" id="cervantes-actions" hidden><button class="secondary" id="btn-finish-natural">Finalizar con medidas no farmacológicas</button><button class="primary" id="btn-cervantes-continue">Continuar valoración terapéutica</button></div>
@@ -92,7 +92,7 @@
     </aside>
   </div>
 
-  <footer class="footer">Basado en Menoguías AEEM, Escala Cervantes SFv2, Criterios de elegibilidad AEEM para la THM (2024), OMS, Medical eligibility criteria for contraceptive use, 6.ª ed. (2025), licencia CC BY-NC-SA 3.0 IGO; esta traducción no ha sido realizada por la OMS, que no se hace responsable de su contenido ni exactitud y fichas técnicas. Versión 2 (revisión octubre 2026). Los datos introducidos se procesan solo en el navegador: no se almacenan ni se transmiten. Uso interno. Unidad de Ginecología y Obstetricia · Hospital Universitario de Jerez.</footer>
-  <script src="script.js?v=4"></script>
+  <footer class="footer">Basado en Menoguías AEEM, Escala Cervantes SFv2, AEEM, Criterios de elegibilidad de la Terapia Hormonal de la Menopausia (Ed. Universidad de Granada, ISBN(e) 978-84-338-6948-7; tabla resumen), fichas técnicas y OMS, Medical eligibility criteria for contraceptive use, 6.ª ed. (2025), licencia CC BY-NC-SA 3.0 IGO (esta traducción no ha sido realizada por la OMS, que no se hace responsable de su contenido ni de su exactitud). Versión 2 (revisión octubre 2026). Los elementos rotulados como «complemento de la herramienta» no forman parte de los criterios de la AEEM ni de la OMS. Los datos introducidos se procesan solo en el navegador: no se almacenan ni se transmiten. Uso interno. Unidad de Ginecología y Obstetricia · Hospital Universitario de Jerez.</footer>
+  <script src="script.js?v=6"></script>
 </body>
 </html>
