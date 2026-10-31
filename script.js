@@ -4,7 +4,7 @@
    Fuentes de las matrices:
    - AEEM. Criterios de elegibilidad para el uso de la THM (2024). Valores 1–4 literales.
    - FT: contraindicaciones de ficha técnica (estradiol, tibolona, EEC/bazedoxifeno, fezolinetant).
-   - OMS. Criterios médicos de elegibilidad para el uso de anticonceptivos, 5.ª ed. (2015), categorías de inicio.
+   - OMS. Medical eligibility criteria for contraceptive use, 6.ª ed. (2025). CC BY-NC-SA 3.0 IGO. Traducción no oficial.
    - EXT: extrapolado del estrógeno oral (TSEC sin categoría AEEM propia).
    Notación de celda: '2' categoría; '4FT' contraindicación de ficha técnica; '3EXT' extrapolada; 'NA' sin categoría/evidencia.
    ===================================================================== */
@@ -75,29 +75,40 @@ const THM_PRECAUTIONS=[
  {id:'endometriosis',label:'Endometriosis (incluida histerectomizada)',demoteOral:false,note:'Valorar asociar gestágeno aun sin útero.'}
 ];
 
-/* ---------- Matriz anticoncepción (OMS MEC 5.ª ed., inicio) ---------- */
-const ACO_COLS={ahc:'AHC (E2/estetrol)',lng:'DIU-LNG',pop:'Gestágeno solo oral',cu:'DIU de cobre'};
+/* ---------- Matriz anticoncepción: OMS, Medical eligibility criteria for contraceptive use, 6.ª ed. (2025) ----------
+   Valores literales de la tabla resumen y de las tablas por método (sección 5). 'I2C3' = inicio 2 / continuación 3;
+   '3/4' = categoría 3 o 4 según gravedad (OMS). La decisión usa la categoría de INICIO. Columnas: COC, POP, LNG-IUD, Cu-IUD. */
+const ACO_COLS={ahc:'AHC (E2/estetrol)',lng:'DIU-LNG',pop:'Gestágeno solo oral (POP)',cu:'DIU de cobre'};
 const ACO_CONDITIONS=[
- {id:'tevAgudo',label:'TVP/TEP aguda',cats:{ahc:'4',lng:'3',pop:'3',cu:'2'}},
- {id:'tevPrev',label:'TVP/TEP previa',cats:{ahc:'4',lng:'2',pop:'2',cu:'1'}},
- {id:'trombofilia',label:'Trombofilia conocida',cats:{ahc:'4',lng:'2',pop:'2',cu:'1'}},
- {id:'cardio',label:'Cardiopatía isquémica o ictus (actual o antecedente)',cats:{ahc:'4',lng:'2',pop:'2',cu:'1'},note:'Gestágeno solo/DIU-LNG: 3 si aparece durante su uso.'},
- {id:'migCA',label:'Migraña con aura',cats:{ahc:'4',lng:'2',pop:'2',cu:'1'}},
- {id:'migSA',label:'Migraña sin aura (≥35 años)',cats:{ahc:'3',lng:'1',pop:'1',cu:'1'}},
- {id:'hta160',label:'HTA ≥160/100 o enfermedad vascular',cats:{ahc:'4',lng:'2',pop:'2',cu:'1'}},
- {id:'hta140',label:'HTA 140–159/90–99 o HTA controlada con tratamiento',cats:{ahc:'3',lng:'1',pop:'1',cu:'1'}},
- {id:'multiRCV',label:'Múltiples factores de riesgo cardiovascular',cats:{ahc:'4',lng:'2',pop:'2',cu:'1'},note:'OMS 3/4 para AHC; se aplica el valor conservador.'},
- {id:'dmVasc',label:'Diabetes con afectación vascular o >20 años de evolución',cats:{ahc:'4',lng:'2',pop:'2',cu:'1'},note:'OMS 3/4 para AHC; se aplica el valor conservador.'},
- {id:'dm',label:'Diabetes sin afectación vascular',cats:{ahc:'2',lng:'2',pop:'2',cu:'1'}},
- {id:'smoke15',label:'Fumadora ≥15 cigarrillos/día (≥35 años)',cats:{ahc:'4',lng:'1',pop:'1',cu:'1'}},
- {id:'smokeLess',label:'Fumadora <15 cigarrillos/día (≥35 años)',cats:{ahc:'3',lng:'1',pop:'1',cu:'1'}},
- {id:'obesity',label:'Obesidad (IMC ≥30)',cats:{ahc:'2',lng:'1',pop:'1',cu:'1'}},
- {id:'lesAPL',label:'LES con anticuerpos antifosfolípido positivos',cats:{ahc:'4',lng:'3',pop:'3',cu:'1'}},
+ {id:'tevPrev',label:'TVP/TEP: antecedente',cats:{ahc:'4',lng:'2',pop:'2',cu:'1'}},
+ {id:'tevAgudo',label:'TVP/TEP aguda',cats:{ahc:'4',lng:'3',pop:'3',cu:'1'}},
+ {id:'tevAc',label:'TVP/TEP con tratamiento anticoagulante establecido',cats:{ahc:'4',lng:'2',pop:'2',cu:'1'}},
  {id:'cirugia',label:'Cirugía mayor con inmovilización prolongada',cats:{ahc:'4',lng:'2',pop:'2',cu:'1'}},
+ {id:'trombofilia',label:'Mutaciones trombogénicas conocidas (factor V Leiden, protrombina, déficit de proteína S, C o antitrombina)',cats:{ahc:'4',lng:'2',pop:'2',cu:'1'}},
+ {id:'cardio',label:'Cardiopatía isquémica actual o antecedente',cats:{ahc:'4',lng:'I2C3',pop:'I2C3',cu:'1'}},
+ {id:'ictus',label:'Ictus (antecedente de accidente cerebrovascular)',cats:{ahc:'4',lng:'2',pop:'I2C3',cu:'1'}},
+ {id:'valvular',label:'Valvulopatía complicada (hipertensión pulmonar, riesgo de FA, antecedente de endocarditis)',cats:{ahc:'4',lng:'2',pop:'1',cu:'2'},note:'OMS: ver aclaraciones de la sección 5 para DIU.'},
+ {id:'lesAPL',label:'LES con anticuerpos antifosfolípido positivos (o desconocidos)',cats:{ahc:'4',lng:'3',pop:'3',cu:'1'}},
+ {id:'migSA35',label:'Migraña sin aura, edad <35 años',cats:{ahc:'I2C3',lng:'2',pop:'I1C2',cu:'1'}},
+ {id:'migSA',label:'Migraña sin aura, edad ≥35 años',cats:{ahc:'I3C4',lng:'2',pop:'I1C2',cu:'1'}},
+ {id:'migCA',label:'Migraña con aura (cualquier edad)',cats:{ahc:'4',lng:'I2C3',pop:'I2C3',cu:'1'}},
+ {id:'htaCtrl',label:'HTA adecuadamente controlada (PA evaluable)',cats:{ahc:'3',lng:'1',pop:'1',cu:'1'},note:'OMS: ver aclaraciones de la sección 5.'},
+ {id:'hta140',label:'PA sistólica 140–159 o diastólica 90–99 mm Hg',cats:{ahc:'3',lng:'1',pop:'1',cu:'1'}},
+ {id:'hta160',label:'PA sistólica ≥160 o diastólica ≥100 mm Hg',cats:{ahc:'4',lng:'2',pop:'2',cu:'1'}},
+ {id:'vascular',label:'Enfermedad vascular',cats:{ahc:'4',lng:'2',pop:'2',cu:'1'}},
+ {id:'multiRCV',label:'Múltiples factores de riesgo cardiovascular arterial (edad, tabaco, diabetes, HTA, dislipemia)',cats:{ahc:'3/4',lng:'2',pop:'2',cu:'1'},note:'OMS 3/4 según gravedad; ver aclaraciones de la sección 5.'},
+ {id:'dm',label:'Diabetes sin enfermedad vascular',cats:{ahc:'2',lng:'2',pop:'2',cu:'1'}},
+ {id:'dmNefro',label:'Diabetes con nefropatía, retinopatía o neuropatía',cats:{ahc:'3/4',lng:'2',pop:'2',cu:'1'},note:'OMS 3/4 según gravedad.'},
+ {id:'dmVasc',label:'Diabetes con otra enfermedad vascular o >20 años de evolución',cats:{ahc:'3/4',lng:'2',pop:'2',cu:'1'},note:'OMS 3/4 según gravedad.'},
+ {id:'smokeLess',label:'Fumadora ≥35 años, <15 cigarrillos/día',cats:{ahc:'3',lng:'1',pop:'1',cu:'1'}},
+ {id:'smoke15',label:'Fumadora ≥35 años, ≥15 cigarrillos/día',cats:{ahc:'4',lng:'1',pop:'1',cu:'1'}},
+ {id:'obesity',label:'Obesidad (IMC ≥30 kg/m²)',cats:{ahc:'2',lng:'1',pop:'1',cu:'1'}},
  {id:'mamaAct',label:'Cáncer de mama actual',cats:{ahc:'4',lng:'4',pop:'4',cu:'1'},nh:'tamox'},
- {id:'mamaPrev',label:'Cáncer de mama previo sin enfermedad ≥5 años',cats:{ahc:'3',lng:'3',pop:'3',cu:'1'},nh:'tamox'},
- {id:'hepato',label:'Cirrosis grave descompensada o tumor hepático (adenoma/maligno)',cats:{ahc:'4',lng:'3',pop:'3',cu:'1'},hep:true},
- {id:'sangrado',label:'Sangrado vaginal no filiado (sospecha de patología)',cats:{ahc:'2',lng:'4',pop:'2',cu:'4'},note:'DIU: no insertar hasta estudiar.'}
+ {id:'mamaPrev',label:'Cáncer de mama previo, sin enfermedad durante 5 años',cats:{ahc:'3',lng:'3',pop:'3',cu:'1'},nh:'tamox'},
+ {id:'cirrosis',label:'Cirrosis grave (descompensada)',cats:{ahc:'4',lng:'3',pop:'3',cu:'1'},hep:true},
+ {id:'adenoma',label:'Adenoma hepatocelular',cats:{ahc:'4',lng:'3',pop:'3',cu:'1'},hep:true},
+ {id:'hepatoma',label:'Tumor hepático maligno (hepatoma)',cats:{ahc:'4',lng:'3',pop:'3',cu:'1'},hep:true},
+ {id:'sangrado',label:'Sangrado vaginal no explicado (sospecha de patología grave), antes de evaluación',cats:{ahc:'2',lng:'I4C2',pop:'2',cu:'I4C2'}}
 ];
 
 /* ---------- Seguridad de los tratamientos no hormonales (FT) ---------- */
@@ -125,9 +136,9 @@ nonHormonal:{title:'Tratamiento no hormonal sintomático',brand:'Ejemplos: venla
 };
 
 function $(id){return document.getElementById(id)} function qsa(sel){return Array.from(document.querySelectorAll(sel))} function round(n){return Math.round(n*10)/10}
-function parseCat(v){if(v==null)return{n:null,src:''};if(v==='NA')return{n:null,src:'NA'};const m=String(v).match(/^(\d)(.*)$/);return{n:Number(m[1]),src:m[2]||''}}
-function catLabel(v){const p=parseCat(v);if(p.src==='NA')return 'NA';return p.n+(p.src==='FT'?' (FT)':p.src==='EXT'?' (ext.)':'')}
-
+function parseCat(v){if(v==null)return{n:null,src:''};if(v==='NA')return{n:null,src:'NA'};if(v==='3/4')return{n:3.5,src:'',lit:'3/4'};let m=String(v).match(/^I(\d)C(\d)$/);if(m)return{n:Number(m[1]),src:'',lit:`I ${m[1]} / C ${m[2]}`};m=String(v).match(/^(\d)(.*)$/);return{n:Number(m[1]),src:m[2]||''}}
+function catLabel(v){const p=parseCat(v);if(p.src==='NA')return 'NA';if(p.lit)return p.lit;return p.n+(p.src==='FT'?' (FT)':p.src==='EXT'?' (ext.)':'')}
+function maxLabel(n){return n===3.5?'3/4':String(n)}
 function init(){renderCervantes();bindEvents();updateSummary()}
 function bindEvents(){
  if($('btn-start')) $('btn-start').addEventListener('click',()=>goTo('station-context'));
@@ -170,13 +181,13 @@ function computeCervantes(){const hasPartner=$('hasPartner').checked, required=h
 
 /* ---------- Ruta ---------- */
 function prepareRoute(){if(!state.cervantes)return;state.route=(state.amenorrhea==='lt12'&&state.needsContraception)?'contraception':'thm';state.eligibility=null;renderRoute()}
-function renderRoute(){let html='';if(state.route==='contraception')html+=cardHTML('Ruta anticonceptiva','Amenorrea <12 meses y necesidad anticonceptiva. Se aplican los criterios OMS método a método (AHC, DIU-LNG, gestágeno solo, DIU de cobre). Si la AHC es elegible, se prefieren preparados con E2/estetrol (criterio de expertos; la OMS no distingue por estrógeno).',true);else html+=cardHTML('Ruta THM','Sin necesidad anticonceptiva o menopausia establecida. Se aplican los criterios AEEM por tipo y vía de THM, más las contraindicaciones de ficha técnica.',true);if(!state.cervantes?.pharmacologic)html+=cardHTML('Rama no farmacológica disponible','El dominio Menopausia + Salud está por debajo del umbral: puede finalizarse con hábitos saludables y productos naturales si la paciente no desea tratamiento farmacológico.',false);$('route-cards').innerHTML=html;$('route-conclusion').className=state.continueLate?'conclusion amber':'conclusion';$('route-conclusion').innerHTML=`<h3>Ruta seleccionada: ${state.route==='contraception'?'anticoncepción':'THM'}</h3>${routeText()}`;updateSummary()}
+function renderRoute(){let html='';if(state.route==='contraception')html+=cardHTML('Ruta anticonceptiva','Amenorrea <12 meses y necesidad anticonceptiva. Se aplican los criterios médicos de elegibilidad de la OMS (6.ª ed., 2025) método a método, con la categoría de inicio. Nota de la herramienta (no OMS): si la AHC es elegible, se sugieren preparados con E2/estetrol.',true);else html+=cardHTML('Ruta THM','Sin necesidad anticonceptiva o menopausia establecida. Se aplican los criterios AEEM por tipo y vía de THM, más las contraindicaciones de ficha técnica.',true);if(!state.cervantes?.pharmacologic)html+=cardHTML('Rama no farmacológica disponible','El dominio Menopausia + Salud está por debajo del umbral: puede finalizarse con hábitos saludables y productos naturales si la paciente no desea tratamiento farmacológico.',false);$('route-cards').innerHTML=html;$('route-conclusion').className=state.continueLate?'conclusion amber':'conclusion';$('route-conclusion').innerHTML=`<h3>Ruta seleccionada: ${state.route==='contraception'?'anticoncepción':'THM'}</h3>${routeText()}`;updateSummary()}
 function cardHTML(title,body,selected){return`<div class="route-card ${selected?'selected':''}"><h3>${title}</h3><p>${body}</p></div>`}
 function routeText(){if(state.route==='contraception')return 'Cada método se evalúa con su propia categoría OMS: un método alternativo solo se propone si también es elegible.';let txt=state.hasUterus?'Tiene útero: la THM estrogénica debe asociar gestágeno (o bazedoxifeno).':'No tiene útero: pueden usarse estrógenos solos.';if(state.continueLate)txt+=' '+lateCategory3Text();return txt}
 
 /* ---------- Elegibilidad ---------- */
 function checkRow(c,group){return `<label title="${c.note||''}"><input type="checkbox" data-group="${group}" value="${c.id}" ${c.group?`data-excl="${c.group}"`:''}> ${c.label}</label>`}
-function renderEligibility(){const box=$('eligibility-form'), isACO=state.route==='contraception';let html=`<div class="grid two"><div class="card"><h3>${isACO?'Criterios OMS por método anticonceptivo':'Criterios AEEM por tipo y vía de THM'}</h3><p class="hint">Marque las situaciones presentes. La herramienta calcula la categoría de cada opción (1–2: elegible; 3: uso excepcional; 4: contraindicada). ${isACO?'Edad ≥40 años: AHC categoría 2 de base.':'La edad y el tiempo desde la menopausia se aplican automáticamente.'}</p></div><div class="card"><label class="inline-check"><input type="checkbox" id="noCriteria"> No presenta ninguna de las situaciones listadas</label></div></div>`;
+function renderEligibility(){const box=$('eligibility-form'), isACO=state.route==='contraception';let html=`<div class="grid two"><div class="card"><h3>${isACO?'Criterios OMS por método anticonceptivo':'Criterios AEEM por tipo y vía de THM'}</h3><p class="hint">Marque las situaciones presentes. La herramienta calcula la categoría de cada opción (1–2: elegible; 3: uso excepcional; 4: contraindicada). ${isACO?'Edad ≥40 años: AHC categoría 2 de base (OMS). Se muestra la categoría de inicio (I) y, cuando difiere, la de continuación (C).':'La edad y el tiempo desde la menopausia se aplican automáticamente.'}</p></div><div class="card"><label class="inline-check"><input type="checkbox" id="noCriteria"> No presenta ninguna de las situaciones listadas</label></div></div>`;
  if(isACO){html+=`<h3>Condiciones clínicas (OMS)</h3><div class="check-grid">${ACO_CONDITIONS.map(c=>checkRow(c,'cond')).join('')}</div>`}
  else{html+=`<h3>Condiciones con categoría AEEM</h3><div class="check-grid">${THM_CONDITIONS.map(c=>checkRow(c,'cond')).join('')}</div><h3>Contraindicaciones de ficha técnica</h3><div class="check-grid">${THM_FT_CONTRA.map(c=>checkRow(c,'cond')).join('')}</div><h3>Precauciones (modifican la vía preferente)</h3><div class="check-grid">${THM_PRECAUTIONS.map(c=>checkRow(c,'prec')).join('')}</div>`}
  html+=`<h3>Seguridad de tratamientos no hormonales</h3><div class="check-grid">${NH_CHECKS.map(c=>checkRow(c,'nh')).join('')}</div>`;
@@ -185,7 +196,7 @@ function renderEligibility(){const box=$('eligibility-form'), isACO=state.route=
  qsa('#eligibility-form input[type="checkbox"][data-group]').forEach(cb=>cb.addEventListener('change',()=>{if(cb.checked){$('noCriteria').checked=false;if(cb.dataset.excl)qsa(`#eligibility-form input[data-excl="${cb.dataset.excl}"]`).forEach(o=>{if(o!==cb)o.checked=false})}}))}
 
 function thmAgeRow(age,amen){const ge5=amen==='y5to10'||amen==='gt10';let c;if(age<45)c=ge5?{combTD:'2',estrTD:'2',estrOral:'2',tib:'2'}:{combTD:'1',estrTD:'1',estrOral:'2',tib:'2'};else if(age<50)c=ge5?{combTD:'2',estrTD:'2',estrOral:'2',tib:'2'}:{combTD:'2',estrTD:'1',estrOral:'2',tib:'2'};else if(age<60)c={combTD:'2',estrTD:'2',estrOral:'2',tib:age<55?'2':'1'};else if(age<70)c={combTD:'3',estrTD:'3',estrOral:'3',tib:'2'};else c={combTD:'3',estrTD:'3',estrOral:'3',tib:ge5?'3':'2'};c.tsec=c.estrOral.replace(/\D.*/,'')+'EXT';return{id:'edad',label:`Edad ${age} años, ${ge5?'≥5':'<5'} años desde la menopausia`,cats:c,note:'AEEM, tabla de edad y duración (inicio).'}}
-function evaluateMatrix(cols,rows){const out={};Object.keys(cols).forEach(k=>{let max=0,na=false,reasons=[];rows.forEach(r=>{const v=r.cats[k];if(v==null)return;const p=parseCat(v);if(p.src==='NA'){na=true;reasons.push({label:r.label,v:'NA'});return}if(p.n>=2)reasons.push({label:r.label,v});if(p.n>max)max=p.n});const status=max>=4?'contra':max===3?'exceptional':na?'na':'eligible';out[k]={max,na,status,reasons}});return out}
+function evaluateMatrix(cols,rows){const out={};Object.keys(cols).forEach(k=>{let max=0,na=false,reasons=[];rows.forEach(r=>{const v=r.cats[k];if(v==null)return;const p=parseCat(v);if(p.src==='NA'){na=true;reasons.push({label:r.label,v:'NA'});return}if(p.n>=2||p.lit)reasons.push({label:r.label,v});if(p.n>max)max=p.n});const status=max>=4?'contra':max===3.5?'clinical':max===3?'exceptional':na?'na':'eligible';out[k]={max,na,status,reasons}});return out}
 
 function validateEligibility(){
  const condIds=qsa('#eligibility-form input[data-group="cond"]:checked').map(x=>x.value), precIds=qsa('#eligibility-form input[data-group="prec"]:checked').map(x=>x.value), nhIds=qsa('#eligibility-form input[data-group="nh"]:checked').map(x=>x.value), none=$('noCriteria')?.checked;
@@ -200,13 +211,13 @@ function validateEligibility(){
  const anyHormEligible=Object.values(evalCols).some(v=>v.status==='eligible');
  const level=isACO?(evalCols.ahc.status==='eligible'?(checked.some(c=>parseCat(c.cats.ahc).n>=2)?'yellow':'green'):'red'):(main.status==='eligible'?((checked.length||prec.length||main.max===2&&state.continueLate)?'yellow':'green'):(anyHormEligible?'yellow':'red'));
  state.eligibility={route:state.route,cols,evalCols,rows,checked,prec,nh,nhIds,level,absLabels:checked.filter(c=>Object.values(c.cats).some(v=>parseCat(v).n===4)).map(c=>c.label),relLabels:[...checked.filter(c=>!Object.values(c.cats).some(v=>parseCat(v).n===4)).map(c=>c.label),...prec.map(p=>p.label)],lateAuto:!isACO&&state.continueLate};
- let msg;if(isACO){msg=evalCols.ahc.status==='eligible'?'AHC elegible (categoría ≤2). Preferir E2/estetrol frente a etinilestradiol.':`AHC ${statusText(evalCols.ahc.status)} (categoría ${evalCols.ahc.max}). Se proponen solo métodos con categoría ≤2; los sofocos se tratarán por vía no hormonal o THM individualizada.`}
+ let msg;if(isACO){msg=evalCols.ahc.status==='eligible'?'AHC elegible (categoría ≤2). Preferir E2/estetrol frente a etinilestradiol.':`AHC ${statusText(evalCols.ahc.status)} (categoría ${maxLabel(evalCols.ahc.max)}). Se proponen solo métodos con categoría ≤2; los sofocos se tratarán por vía no hormonal o THM individualizada.`}
  else{msg=main.status==='eligible'?`THM sistémica elegible para al menos una vía (categoría ${main.max}). Se ordenan las opciones por categoría y vía preferente.`:main.status==='exceptional'?'Las opciones estrogénicas quedan en categoría 3: se priorizan alternativas no hormonales; la THM queda como uso excepcional tras decisión compartida.':'THM sistémica contraindicada (categoría 4 / ficha técnica). Se proponen alternativas no hormonales.'}
  let detail=catTableHTML(cols,evalCols);if(state.eligibility.lateAuto)detail+=`<div class="warning-box"><strong>Inicio tardío de THM: categoría 3.</strong><br>${lateCategory3Text()}</div>`;if(prec.length)detail+=`<div class="warning-box"><strong>Precauciones:</strong><br>${prec.map(p=>`${p.label}: ${p.note}`).join('<br>')}</div>`;const nhNotes=nhWarnings(nh);if(nhNotes.length)detail+=`<div class="warning-box"><strong>Tratamientos no hormonales:</strong><br>${nhNotes.join('<br>')}</div>`;
  $('eligibility-conclusion').className=level==='red'?'conclusion red':level==='yellow'?'conclusion amber':'conclusion';$('eligibility-conclusion').innerHTML=`<h3>${eligibilityLabel()}</h3><p>${msg}</p>${detail}`;
  state.treatment=null;renderTreatmentOptions();unlockStation('station-treatment');updateSummary();goTo('station-treatment')}
-function statusText(s){return{eligible:'elegible',exceptional:'de uso excepcional',contra:'contraindicada',na:'sin categoría (no se propone)'}[s]}
-function catTableHTML(cols,ev){return `<table class="cat-table"><thead><tr><th>Opción</th><th>Categoría</th><th>Situación</th><th>Motivos</th></tr></thead><tbody>${Object.entries(cols).map(([k,label])=>{const e=ev[k];return `<tr><td>${label}</td><td><span class="cat-badge c${e.status==='na'?'na':e.max}">${e.status==='na'?'NA':e.max}</span></td><td>${statusText(e.status)}</td><td>${e.reasons.map(r=>`${r.label} (${catLabel(r.v)})`).join('; ')||'—'}</td></tr>`}).join('')}</tbody></table>`}
+function statusText(s){return{eligible:'elegible',exceptional:'de uso excepcional',clinical:'categoría 3/4 según gravedad (valoración clínica; no se propone)',contra:'contraindicada',na:'sin categoría (no se propone)'}[s]}
+function catTableHTML(cols,ev){return `<table class="cat-table"><thead><tr><th>Opción</th><th>Categoría</th><th>Situación</th><th>Motivos</th></tr></thead><tbody>${Object.entries(cols).map(([k,label])=>{const e=ev[k];return `<tr><td>${label}</td><td><span class="cat-badge c${e.status==='na'?'na':Math.ceil(e.max)}">${e.status==='na'?'NA':maxLabel(e.max)}</span></td><td>${statusText(e.status)}</td><td>${e.reasons.map(r=>`${r.label} (${catLabel(r.v)})`).join('; ')||'—'}</td></tr>`}).join('')}</tbody></table>`}
 function nhWarnings(nh){const w=[];if(nh.hep)w.push('Hepatopatía/alteración hepática: fezolinetant no se inicia y se evita cimicífuga.');if(nh.cyp)w.push('Inhibidor de CYP1A2: fezolinetant contraindicado.');if(nh.renal)w.push('ERC grave: fezolinetant no recomendado; ajustar gabapentina.');if(nh.tamox)w.push('Tamoxifeno o cáncer de mama: evitar paroxetina/fluoxetina; preferir venlafaxina, citalopram/escitalopram o gabapentina.');return w}
 function eligibilityLabel(){if(!state.eligibility)return 'Pendiente';return state.eligibility.level==='red'?'No favorable':state.eligibility.level==='yellow'?'Precaución':'Favorable'}
 
@@ -215,7 +226,7 @@ function neurokininAllowed(){const nh=state.eligibility?.nh||{};return !(nh.hep|
 function recommendedTreatments(){
  if(state.naturalFinal||state.route==='natural'||!state.eligibility)return{main:['natural'],exceptional:[],excluded:[]};
  const ev=state.eligibility.evalCols, excluded=[], exceptional=[];let horm=[];
- const add=(k)=>{const col=treatmentLibrary[k].col, e=ev[col];if(!e)return;if(e.status==='eligible')horm.push(k);else if(e.status==='exceptional')exceptional.push(k);else excluded.push({k,why:e.status==='na'?'sin categoría AEEM/evidencia para esta situación':'categoría 4 / contraindicación de ficha técnica'})};
+ const add=(k)=>{const col=treatmentLibrary[k].col, e=ev[col];if(!e)return;if(e.status==='eligible')horm.push(k);else if(e.status==='exceptional')exceptional.push(k);else excluded.push({k,why:e.status==='na'?'sin categoría AEEM/evidencia para esta situación':e.status==='clinical'?'OMS categoría 3/4: depende de la gravedad, requiere valoración clínica individual':'categoría 4 / contraindicación'})};
  let nonH=[];
  if(state.route==='contraception'){['contraceptionE2','contraceptionLNG','contraceptionPOP','contraceptionCu'].forEach(add);
   // La AHC trata además los sofocos; si no es elegible, el tratamiento sintomático entra como opción.
@@ -238,7 +249,7 @@ function renderTreatmentOptions(){const r=recommendedTreatments(), all=[...r.mai
  if(r.excluded.length)html+=`<details class="details-soft"><summary>Opciones no propuestas (${r.excluded.length})</summary><ul>${r.excluded.map(x=>`<li><strong>${treatmentLibrary[x.k].title}</strong>: ${x.why}.</li>`).join('')}</ul></details>`;
  $('treatment-options').innerHTML=html;qsa('.treatment-card').forEach(card=>card.addEventListener('click',()=>selectTreatment(card.dataset.key)));selectTreatment(state.treatment)}
 function brandFor(key){const t=treatmentLibrary[key];if(key==='natural'&&state.eligibility?.nh?.hep)return 'Solo hábitos saludables: evitar cimicífuga por hepatopatía';return t.brand}
-function catBadgeFor(key){const col=treatmentLibrary[key].col, e=state.eligibility?.evalCols?.[col];return e?`<span class="cat-badge c${e.status==='na'?'na':e.max}">Cat. ${e.status==='na'?'NA':e.max}</span> `:''}
+function catBadgeFor(key){const col=treatmentLibrary[key].col, e=state.eligibility?.evalCols?.[col];return e?`<span class="cat-badge c${e.status==='na'?'na':Math.ceil(e.max)}">Cat. ${e.status==='na'?'NA':maxLabel(e.max)}</span> `:''}
 function treatmentCard(key,recommended=false,exceptional=false){const t=treatmentLibrary[key],r=treatmentRationale(key),brand=brandFor(key);return`<div class="treatment-card ${recommended?'recommended':''} ${exceptional?'exceptional':''}" data-key="${key}"><input type="radio" name="treatment" ${state.treatment===key?'checked':''}>${recommended?'<span class="recommended-ribbon">Primera opción sugerida</span>':''}<h3>${catBadgeFor(key)}${t.title}</h3><p>${r}</p><div class="pill-row"><span class="pill">${brand.split(';')[0]}</span></div><details class="details-soft"><summary>Ver ejemplo y recomendaciones</summary><div class="treatment-meta"><div class="mini-box"><strong>Ejemplo de marca/presentación</strong>${brand}</div><div class="mini-box"><strong>Recomendación paciente</strong>${t.patient}</div></div></details></div>`}
 function treatmentRationale(key){const nh=state.eligibility?.nh||{};return{
  natural:'Rama no farmacológica: especialmente si Cervantes Menopausia + Salud está por debajo del umbral o la paciente prefiere evitar tratamiento farmacológico.',
@@ -258,7 +269,7 @@ function treatmentRationale(key){const nh=state.eligibility?.nh||{};return{
 function selectTreatment(key){state.treatment=key;qsa('.treatment-card').forEach(c=>c.classList.toggle('selected',c.dataset.key===key));qsa('.treatment-card input').forEach(i=>i.checked=i.closest('.treatment-card').dataset.key===key);const exc=recommendedTreatments().exceptional.includes(key);$('treatment-conclusion').className=exc?'conclusion amber':'conclusion';$('treatment-conclusion').innerHTML=`<h3>Tratamiento seleccionado</h3>${treatmentLibrary[key].title}. ${treatmentRationale(key)}${exc?' <strong>Uso excepcional (categoría 3): documentar la decisión compartida.</strong>':''}`;updateSummary()}
 
 /* ---------- Informe ---------- */
-function categoryLines(){const el=state.eligibility;if(!el)return '';return '\nCategorías: '+Object.entries(el.cols).map(([k,l])=>{const e=el.evalCols[k];return `${l} ${e.status==='na'?'NA':e.max}`}).join('; ')+'.'+(el.checked.length?`\nSituaciones marcadas: ${el.checked.map(c=>c.label).join('; ')}.`:'')+(el.prec.length?`\nPrecauciones: ${el.prec.map(p=>p.label).join('; ')}.`:'')+(nhWarnings(el.nh).length?`\nNo hormonales: ${nhWarnings(el.nh).join(' ')}`:'')}
+function categoryLines(){const el=state.eligibility;if(!el)return '';return '\nCategorías: '+Object.entries(el.cols).map(([k,l])=>{const e=el.evalCols[k];return `${l} ${e.status==='na'?'NA':maxLabel(e.max)}`}).join('; ')+'.'+(el.checked.length?`\nSituaciones marcadas: ${el.checked.map(c=>c.label).join('; ')}.`:'')+(el.prec.length?`\nPrecauciones: ${el.prec.map(p=>p.label).join('; ')}.`:'')+(nhWarnings(el.nh).length?`\nNo hormonales: ${nhWarnings(el.nh).join(' ')}`:'')}
 function generateReports(){const key=state.treatment||'natural',t=treatmentLibrary[key],c=state.cervantes,pauta=pautaText(),elig=state.eligibility?eligibilityLabel():'No aplicable';const exc=state.eligibility?recommendedTreatments().exceptional.includes(key):false;const trans=transdermalText(),safety=state.eligibility?.lateAuto?' '+lateCategory3Text():(state.continueLate?' '+lateSafetyText():'');
  const cerv=c?`dominio Menopausia + Salud ${c.ms}/100 (directa ${c.msRaw}/45; corte >25, Coronado et al., Menopause 2021); vasomotor ${c.vaso}/100; puntuación global ${c.global}/100. Interpretación: ${c.pharmacologic?'impacto moderado-severo, se valora tratamiento farmacológico según algoritmo AEEM.':'impacto leve, se plantean hábitos saludables y/o productos naturales con reevaluación.'}`:'—';
  const report=`Algoritmo terapéutico de sofocos en menopausia.\n\nPaciente de ${state.age||'—'} años, con amenorrea ${amenorrheaLabel(state.amenorrhea)}.${state.amenorrhea==='lt12'?` Necesidad anticonceptiva: ${state.needsContraception?'sí':'no'}.`:''} ${state.hasUterus===null?'':state.hasUterus?'Útero presente.':'Histerectomizada / sin útero.'}\n\nEscala Cervantes SFv2: ${cerv}\n\nRuta: ${state.route==='contraception'?'anticonceptiva con criterios OMS':state.route==='thm'?'THM con criterios AEEM y ficha técnica':'no farmacológica'}. Elegibilidad: ${elig}.${categoryLines()}${safety}${trans}\n\nTratamiento seleccionado: ${t.title}${exc?' (USO EXCEPCIONAL, categoría 3: decisión compartida documentada)':''}.\nPauta orientativa: ${pauta}\nEjemplo: ${brandFor(key)}.\n\nSe explican beneficios esperados, alternativas, signos de alarma y necesidad de revisión periódica. Esta herramienta no sustituye el juicio clínico ni la ficha técnica de los medicamentos.`;
