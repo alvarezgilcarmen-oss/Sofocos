@@ -169,12 +169,12 @@ const ACO_CONDITIONS=[
  {id:'smokeLess',label:'Fumadora ≥35 años, <15 cigarrillos/día',cats:{ahc:'3',lng:'1',pop:'1',cu:'1'}},
  {id:'smoke15',label:'Fumadora ≥35 años, ≥15 cigarrillos/día',cats:{ahc:'4',lng:'1',pop:'1',cu:'1'}},
  {id:'obesity',label:'Obesidad (IMC ≥30 kg/m²)',cats:{ahc:'2',lng:'1',pop:'1',cu:'1'}},
- {id:'mamaAct',label:'Cáncer de mama actual',cats:{ahc:'4',lng:'4',pop:'4',cu:'1'},nh:'tamox'},
- {id:'mamaPrev',label:'Cáncer de mama previo, sin enfermedad durante 5 años',cats:{ahc:'3',lng:'3',pop:'3',cu:'1'},nh:'tamox'},
+ {id:'mamaAct',label:'Cáncer de mama actual',cats:{ahc:'4',lng:'4',pop:'4',cu:'1'},nh:'tamox',ft:'mama'},
+ {id:'mamaPrev',label:'Cáncer de mama previo, sin enfermedad durante 5 años',cats:{ahc:'3',lng:'3',pop:'3',cu:'1'},nh:'tamox',ft:'mama'},
  {id:'cirrosis',label:'Cirrosis grave (descompensada)',cats:{ahc:'4',lng:'3',pop:'3',cu:'1'},hep:true},
  {id:'adenoma',label:'Adenoma hepatocelular',cats:{ahc:'4',lng:'3',pop:'3',cu:'1'},hep:true},
  {id:'hepatoma',label:'Tumor hepático maligno (hepatoma)',cats:{ahc:'4',lng:'3',pop:'3',cu:'1'},hep:true},
- {id:'sangrado',label:'Sangrado vaginal no explicado (sospecha de patología grave), antes de evaluación',cats:{ahc:'2',lng:'I4C2',pop:'2',cu:'I4C2'}}
+ {id:'sangrado',label:'Sangrado vaginal no explicado (sospecha de patología grave), antes de evaluación',cats:{ahc:'2',lng:'I4C2',pop:'2',cu:'I4C2'},ft:'sangrado'}
 ];
 
 const EXCL_WHO={tevPrev:'tev',tevAgudo:'tev',tevAc:'tev',migSA:'mig',migCA:'mig',htaCtrl:'hta',hta140:'hta',hta160:'hta',dm:'dm',dmNefro:'dm',dmVasc:'dm',smokeLess:'smoke',smoke15:'smoke',mamaAct:'mama',mamaPrev:'mama'};
@@ -271,12 +271,21 @@ function renderEligibility(){const box=$('eligibility-form'), isACO=state.route=
  else{html+=`<h3>Condiciones con categoría AEEM <span class="src-tag aeem">AEEM · tabla resumen · literal</span></h3>`+THM_GROUPS.map(g=>`<h4 class="group-title">${g.title}</h4><div class="check-grid">${g.rows.map(c=>checkRow(c,'cond')).join('')}</div>`).join('')+`<h3>Contraindicaciones de ficha técnica <span class="src-tag tool">Complemento de la herramienta · no forma parte de los criterios AEEM</span></h3><div class="check-grid">${THM_FT_CONTRA.map(c=>checkRow(c,'ft')).join('')}</div><h3>Precauciones (modifican la vía preferente) <span class="src-tag tool">Complemento de la herramienta (ficha técnica) · no AEEM</span></h3><div class="check-grid">${THM_PRECAUTIONS.map(c=>checkRow(c,'prec')).join('')}</div>`}
  html+=`<h3>Seguridad de tratamientos no hormonales <span class="src-tag tool">Complemento de la herramienta (ficha técnica/EMA) · no AEEM/OMS</span></h3><div class="check-grid">${NH_CHECKS.map(c=>checkRow(c,'nh')).join('')}</div>`;
  box.innerHTML=html;
- $('noCriteria').addEventListener('change',e=>{if(e.target.checked)qsa('#eligibility-form input[type="checkbox"][data-group]').forEach(cb=>cb.checked=false)});
+ $('noCriteria').addEventListener('change',e=>{if(e.target.checked)qsa('#eligibility-form input[type="checkbox"][data-group]').forEach(cb=>cb.checked=false);updateCovered()});
  qsa('#eligibility-form input[type="checkbox"]').forEach(cb=>cb.addEventListener('change',()=>{if(state.eligibility){state.eligibility=null;invalidateFrom('station-treatment');$('eligibility-conclusion').className='conclusion amber';$('eligibility-conclusion').textContent='Criterios modificados: vuelva a calcular la elegibilidad.'}}));
  qsa('#eligibility-form input[type="checkbox"][data-group]').forEach(cb=>cb.addEventListener('change',()=>{if(cb.checked){$('noCriteria').checked=false;if(cb.dataset.excl)qsa(`#eligibility-form input[data-excl="${cb.dataset.excl}"][data-group="${cb.dataset.group}"]`).forEach(o=>{if(o!==cb)o.checked=false})}}));
- if(isACO)qsa('#eligibility-form input[data-group="cond"]').forEach(cb=>cb.addEventListener('change',()=>{const t=WHO_TO_AEEM[cb.value];if(!t||!cb.checked)return;t.forEach(id=>{const o=document.querySelector(`#eligibility-form input[data-group="${id.startsWith('ft')?'ft':'aeem'}"][value="${id}"]`);if(o){o.checked=true;if(o.dataset.excl)qsa(`#eligibility-form input[data-excl="${o.dataset.excl}"][data-group="aeem"]`).forEach(x=>{if(x!==o)x.checked=false})}})}))}
+ if(isACO)qsa('#eligibility-form input[data-group="cond"]').forEach(cb=>cb.addEventListener('change',()=>{const t=WHO_TO_AEEM[cb.value];if(!t||!cb.checked)return;t.forEach(id=>{const o=document.querySelector(`#eligibility-form input[data-group="${id.startsWith('ft')?'ft':'aeem'}"][value="${id}"]`);if(o){o.checked=true;if(o.dataset.excl)qsa(`#eligibility-form input[data-excl="${o.dataset.excl}"][data-group="aeem"]`).forEach(x=>{if(x!==o)x.checked=false})}})}))
+ qsa('#eligibility-form input[type="checkbox"]').forEach(cb=>cb.addEventListener('change',updateCovered));updateCovered()}
+/* Complementos que ya quedan cubiertos por un criterio AEEM/OMS marcado: se ocultan (se aplican automáticamente). */
+const COVERED_BY={ftMama:['mamaRHneg','mamaRHpos','mamaAct','mamaPrev'],ftTumorED:['endometrio'],ftHepAguda:['hepAguda'],ftSangrado:['sangrado'],
+ nhHep:['hepAguda','cirrosis','adenoma','hepatoma','ftHepAguda'],nhTamox:['serms','mamaRHneg','mamaRHpos','mamaAct','mamaPrev','ftMama']};
+function updateCovered(){const on=new Set(qsa('#eligibility-form input[type="checkbox"]:checked').map(cb=>cb.value));const shown={};
+ for(let pass=0;pass<2;pass++){Object.entries(COVERED_BY).forEach(([id,by])=>{const cb=document.querySelector(`#eligibility-form input[value="${id}"][data-group="ft"],#eligibility-form input[value="${id}"][data-group="nh"]`);if(!cb)return;const src=by.filter(x=>on.has(x)&&x!==id);const lab=cb.closest('label');
+  if(src.length){if(cb.checked){cb.checked=false;on.delete(id)}lab.style.display='none';shown[id]={label:lab.textContent.trim(),by:src}}else{lab.style.display='';delete shown[id]}})}
+ qsa('#eligibility-form .covered-note').forEach(n=>n.remove());const byGroup={};Object.entries(shown).forEach(([id,v])=>{const g=id.startsWith('nh')?'nh':'ft';(byGroup[g]=byGroup[g]||[]).push(v.label)});
+ Object.entries(byGroup).forEach(([g,labs])=>{const any=document.querySelector(`#eligibility-form input[data-group="${g}"]`);if(!any)return;const grid=any.closest('.check-grid');const n=document.createElement('p');n.className='hint covered-note';n.textContent='Ya aplicadas automáticamente por los criterios marcados: '+labs.join('; ')+'.';grid.after(n)})}
 /* Premarcado de situaciones equivalentes OMS → AEEM (revisable por la clínica). */
-const WHO_TO_AEEM={tevPrev:['tevPrev'],tevAc:['tevAc'],trombofilia:['trombofilia'],ictus:['ictus'],migSA:['migSA'],migCA:['migCA'],htaCtrl:['hta'],hta140:['hta'],hta160:['hta'],dm:['dm'],dmNefro:['dm'],dmVasc:['dm'],smokeLess:['tabaco'],smoke15:['tabaco'],obesity:['imc30'],mamaAct:['ftMama'],mamaPrev:['ftMama'],cirrosis:['cirrosis'],sangrado:['ftSangrado']};
+const WHO_TO_AEEM={tevPrev:['tevPrev'],tevAc:['tevAc'],trombofilia:['trombofilia'],ictus:['ictus'],migSA:['migSA'],migCA:['migCA'],htaCtrl:['hta'],hta140:['hta'],hta160:['hta'],dm:['dm'],dmNefro:['dm'],dmVasc:['dm'],smokeLess:['tabaco'],smoke15:['tabaco'],obesity:['imc30'],cirrosis:['cirrosis']};
 
 function thmAgeRow(age,amen){let c,lab;
  if(age<45){c={combTD:'1',combOral:'2',estrTD:'1',estrOral:'2',tib:'2|2**'};lab='40-44'}
@@ -301,7 +310,7 @@ function validateEligibility(){
  if(isACO){/* Opción combinada: categoría OMS del DIU-LNG + categoría AEEM de los estrógenos transdérmicos (se aplica la mayor). */
   const aChecked=THM_CONDITIONS.filter(c=>aeemIds.includes(c.id));const tRows=[thmAgeRow(state.age,state.amenorrhea),...aChecked];const t=evaluateMatrix({estrTD:1},tRows).estrTD;const l=evaluateMatrix({lng:1},rows).lng;
   const max=Math.max(l.max,t.max),na=t.na,status=max>=4?'contra':max===3.5?'clinical':max===3?'exceptional':(max===2.5||na)?'individual':'eligible';
-  const fk=new Set([...THM_FT_CONTRA.filter(f=>ftIds.includes(f.id)).map(f=>f.key),...aChecked.filter(c=>c.ft).map(c=>c.ft)]);
+  const fk=new Set([...THM_FT_CONTRA.filter(f=>ftIds.includes(f.id)).map(f=>f.key),...aChecked.filter(c=>c.ft).map(c=>c.ft),...checked.filter(c=>c.ft).map(c=>c.ft)]);
   evalCols.lngE2={max,na,status,reasons:[...l.reasons.map(r=>({label:'OMS DIU-LNG — '+r.label,v:r.v})),...t.reasons.map(r=>({label:'AEEM estrógenos transdérmicos — '+r.label,v:r.v}))],ft:THM_FT_CONTRA.filter(f=>fk.has(f.key)).map(f=>f.label),parts:{oms:l,aeem:t}}}
  let ftList=[];if(!isACO){const keys=new Set([...THM_FT_CONTRA.filter(f=>ftIds.includes(f.id)).map(f=>f.key),...checked.filter(c=>c.ft).map(c=>c.ft)]);ftList=THM_FT_CONTRA.filter(f=>keys.has(f.key)).map(f=>f.label);Object.keys(evalCols).forEach(k=>{if(ftList.length)evalCols[k].ft.push(...ftList)});if(state.amenorrhea==='lt12'){['tib','tsec'].forEach(k=>{if(evalCols[k])evalCols[k].ft.push('Amenorrea <12 meses (tibolona y TSEC requieren ≥12 meses desde la última regla)')})}}
  const nh={hep:nhIds.includes('nhHep')||checked.some(c=>c.hep)||THM_CONDITIONS.some(c=>c.hep&&aeemIds.includes(c.id))||THM_FT_CONTRA.some(f=>f.hep&&ftIds.includes(f.id)),cyp:nhIds.includes('nhCyp'),renal:nhIds.includes('nhRenal'),tamox:nhIds.includes('nhTamox')||checked.some(c=>c.nh==='tamox'||c.id==='serms')||ftIds.includes('ftMama')};
