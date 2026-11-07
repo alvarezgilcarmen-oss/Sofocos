@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Algoritmo terapéutico de sofocos en menopausia</title>
-  <link rel="stylesheet" href="style.css?v=10" />
+  <link rel="stylesheet" href="style.css?v=15" />
 </head>
 <body>
   <header class="topbar clean-topbar">
@@ -26,7 +26,7 @@
 
     <main class="main-content">
       <div class="progress-strip pretty-progress" aria-label="Progreso del algoritmo">
-        <div class="progress-step active" id="progress-context"><b>🕒</b><span>Amenorrea</span></div>
+        <div class="progress-step active" id="progress-context"><b>🕒</b><span>Situación</span></div>
         <div class="progress-step" id="progress-cervantes"><b>📊</b><span>Cervantes</span></div>
         <div class="progress-step" id="progress-route"><b>🧭</b><span>Ruta</span></div>
         <div class="progress-step" id="progress-eligibility"><b>🛡️</b><span>Elegibilidad</span></div>
@@ -37,7 +37,7 @@
       <section class="station active" id="station-context">
         <div class="station-head visual-head"><div><h2>🕒 Situación menopáusica</h2><p>Define la ventana terapéutica y la necesidad anticonceptiva. La paciente ya consulta por sofocos.</p></div><span class="badge green">Estación 1</span></div>
         <div class="grid two">
-          <div class="card input-card"><label class="field-label" for="age">Edad</label><input id="age" type="number" min="35" max="90" placeholder="Ej. 52" /><p class="hint">&lt;40 años: valorar IOP/menopausia precoz fuera de esta herramienta.</p></div>
+          <div class="card input-card"><label class="field-label" for="age">Edad</label><input id="age" type="number" min="40" max="100" step="1" placeholder="Ej. 52" /><p class="hint">&lt;40 años: valorar IOP/menopausia precoz fuera de esta herramienta.</p></div>
           <div class="card input-card"><label class="field-label" for="amenorrhea">Tiempo en amenorrea</label><select id="amenorrhea"><option value="">Seleccionar</option><option value="lt12">Menos de 12 meses</option><option value="y1to5">Entre 1 y 5 años</option><option value="y5to10">Entre 5 y 10 años</option><option value="gt10">Más de 10 años</option></select></div>
         </div>
         <div id="context-dynamic" class="dynamic-zone"></div>
@@ -59,17 +59,17 @@
       </section>
 
       <section class="station locked" id="station-eligibility">
-        <div class="station-head visual-head"><div><h2>🛡️ Criterios de elegibilidad</h2><p>OMS si la ruta es anticonceptiva y AEEM si la ruta es THM.</p></div><span class="badge amber">Estación 4</span></div>
+        <div class="station-head visual-head"><div><h2>🛡️ Criterios de elegibilidad</h2><p>AEEM si la ruta es THM; OMS si la ruta es anticonceptiva (y AEEM para la opción DIU-LNG + estradiol transdérmico).</p></div><span class="badge amber">Estación 4</span></div>
         <div id="eligibility-form"></div><div class="conclusion empty" id="eligibility-conclusion">Complete los criterios para emitir una recomendación segura.</div><div class="actions"><button class="primary" id="btn-eligibility">Calcular elegibilidad y continuar</button></div>
       </section>
 
       <section class="station locked" id="station-treatment">
-        <div class="station-head visual-head"><div><h2>💊 Tratamiento recomendado</h2><p>Opciones agrupadas por categoría, sin preferencia entre las de igual categoría.</p></div><span class="badge green">Estación 5</span></div>
+        <div class="station-head visual-head"><div><h2>💊 Opciones terapéuticas</h2><p>Opciones agrupadas por categoría, sin preferencia entre las de igual categoría.</p></div><span class="badge green">Estación 5</span></div>
         <div id="treatment-options" class="treatment-options"></div><div class="conclusion empty" id="treatment-conclusion">Seleccione una opción terapéutica.</div><div class="actions"><button class="primary" id="btn-treatment">Generar informe y recomendaciones</button></div>
       </section>
 
       <section class="station locked" id="station-report">
-        <div class="station-head visual-head"><div><h2>📄 Informe y recomendaciones</h2><p>Textos listos para copiar a Diraya o entregar a la paciente.</p></div><span class="badge blue">Salida final</span></div>
+        <div class="station-head visual-head"><div><h2>📄 Informe y recomendaciones</h2><p>Textos listos para copiar a la historia clínica electrónica o entregar a la paciente.</p></div><span class="badge blue">Salida final</span></div>
         <div class="final-summary" id="final-summary"></div>
         <div class="grid two report-grid">
           <div class="card report-card"><h3>Informe para historia clínica</h3><textarea id="clinical-report" readonly></textarea><button class="copy-btn" data-copy="clinical-report">Copiar informe</button></div>
@@ -92,7 +92,7 @@
     </aside>
   </div>
 
-  <footer class="footer">Basado en la Menoguía AEEM «Sofocos» (Fasero Laiz M, coord.; Ed. Universidad de Granada, 2023; ISBN(e) 978-84-338-7274-6), Escala Cervantes SFv2, AEEM, Criterios de elegibilidad de la Terapia Hormonal de la Menopausia (Ed. Universidad de Granada, ISBN(e) 978-84-338-6948-7; tabla resumen), fichas técnicas y OMS, Medical eligibility criteria for contraceptive use, 6.ª ed. (2025), licencia CC BY-NC-SA 3.0 IGO (esta traducción no ha sido realizada por la OMS, que no se hace responsable de su contenido ni de su exactitud). Versión 2 (revisión octubre 2026). Los elementos rotulados como «complemento de la herramienta» no forman parte de los criterios de la AEEM ni de la OMS. Los datos introducidos se procesan solo en el navegador: no se almacenan ni se transmiten.</footer>
-  <script src="script.js?v=11"></script>
+  <footer class="footer">Basado en la Menoguía AEEM «Sofocos» (Fasero Laiz M, coord.; Ed. Universidad de Granada, 2023; ISBN(e) 978-84-338-7274-6), Escala Cervantes SFv2, AEEM, Criterios de elegibilidad de la Terapia Hormonal de la Menopausia (Ed. Universidad de Granada, ISBN(e) 978-84-338-6948-7; tabla resumen), fichas técnicas y OMS, Medical eligibility criteria for contraceptive use, 6.ª ed. (2025), licencia CC BY-NC-SA 3.0 IGO (esta traducción no ha sido realizada por la OMS, que no se hace responsable de su contenido ni de su exactitud). Versión 3 (revisión noviembre 2026). Herramienta independiente basada en documentos publicados; no ha sido elaborada ni avalada por la AEEM ni por la OMS. Los elementos rotulados como «complemento de la herramienta» no forman parte de los criterios de la AEEM ni de la OMS. Los datos introducidos se procesan solo en el navegador: no se almacenan ni se transmiten.</footer>
+  <script src="script.js?v=15"></script>
 </body>
 </html>
